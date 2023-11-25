@@ -98,13 +98,12 @@ while isRunning:
         rend.camPosition.y = actualModel.position.x + r * glm.sin(theta)
             
     if keys[K_q]:
-        if rend.camPosition.z < 3:
-            rend.camPosition.z += 5 * deltaTime
-
-        
-    elif keys[K_e]:
-        if rend.camPosition.z > -3:
+        if rend.camPosition.z > -1.7:
             rend.camPosition.z -= 5 * deltaTime
+            
+    elif keys[K_e]:
+        if rend.camPosition.z < 1.7:
+            rend.camPosition.z += 5 * deltaTime
         
     #actualModel.rotation.y += 45 * deltaTime
     

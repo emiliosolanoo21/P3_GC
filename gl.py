@@ -41,7 +41,7 @@ class Renderer(object):
         #View Matrix
         self.camPosition = glm.vec3(0,0,0)
         self.camRotation = glm.vec3(0,0,0)
-        self.viewMatrix = self.getViewMatrix()      
+        self.viewMatrix = self.update()      
 
         #Projection Matrix
         self.projectionMatrix = glm.perspective(glm.radians(60),            #FOV
@@ -87,8 +87,8 @@ class Renderer(object):
     
 
     def update(self):
-        self.viewMatrix = self.getViewMatrix()
-        #self.viewMatrix = glm.lookAt(self.camPosition, self.target, glm.vec3(0,1,0))
+        #self.viewMatrix = self.getViewMatrix()
+        self.viewMatrix = glm.lookAt(self.camPosition, self.target, glm.vec3(0,1,0))
         
     def loadModel(self, filename, texture, position = (0,0,-5), rotation = (0,0,0), scale = (1,1,1)):
         model = Obj(filename)

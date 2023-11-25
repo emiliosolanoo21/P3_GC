@@ -1,2 +1,11 @@
 # P3_GC
-Proyecto 3 del curso Gráficas por computadora
+Proyecto 3 del curso Gráficas por computadora, en el cual se renderizan diferentes modelos en 3D
+con sus respectivos shaders y sus respectivas modificaciones de forma y posición.
+
+# Teclas para manejo del programa
+1. Cambiar entre los modelos disponibles con las teclas numerales del 1 al 4.
+2. Cambiar entre los diferentes shaders disponibles con las teclas numerales del 7 al 0. Todos los shaders son aceptados por todos los modelos.
+3. Mover el modelo seleccionado con el formato awsd. 
+4. Realizar Zoom al modelo con las teclas Q (Zoom In) y E (Zoom Out).
+5. Rotar en el eje y con las felchas de izquierda y derecha.
+
