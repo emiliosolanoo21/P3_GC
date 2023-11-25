@@ -43,12 +43,22 @@ while isRunning:
                 rend.toggleFilledMode()
                 
             elif event.key == pygame.K_1:
-                rend.setShaders(complex_shader, chess_shader)
+                obj2 = rend.loadModel(filename = "hand.obj", texture = "skin.bmp", position = (0,-2,-5), scale = (0.5,0.5,0.5))
+                rend.target = obj2.position
             elif event.key == pygame.K_2:
-                rend.setShaders(complex_shader, golden_shader)
+                obj3 = rend.loadModel(filename = "vpot.obj", texture = "terracota.bmp", position = (0,-2,-5), scale = (0.5,0.5,0.5))
+                rend.target = obj3.position
             elif event.key == pygame.K_3:
+                obj4 = rend.loadModel(filename = "notepad.obj", texture = "notepad.bmp", position = (0,-2,-5), scale = (0.5,0.5,0.5))
+                rend.target = obj4.position
+            
+            elif event.key == pygame.K_7:
+                rend.setShaders(complex_shader, chess_shader)
+            elif event.key == pygame.K_8:
+                rend.setShaders(complex_shader, golden_shader)
+            elif event.key == pygame.K_9:
                 rend.setShaders(complex_shader, disco_shader)
-            elif event.key == pygame.K_4:
+            elif event.key == pygame.K_0:
                 rend.setShaders(complex_shader, pattern_shader)            
 
     #5 unidades por segundo
