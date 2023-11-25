@@ -3,6 +3,7 @@ from pygame.locals import *
 import glm
 from gl import Renderer
 from model import Model
+from OpenGL.GL import *
 from shaders import *
 
 width = 960
@@ -18,15 +19,28 @@ rend = Renderer(screen)
 
 rend.setShaders(complex_shader, fragment_shader)
 
+pygame.mixer.music.load("music.mp3")
+pygame.mixer.music.play(-1)
+pygame.mixer.music.set_volume(0.3)
+
 #---------------------------------------------------------------
-#Montaje de figuras
+#Montaje de lista con renderizado de figuras
 
-obj1 = rend.loadModel(filename = "axe.obj", texture = "axe.bmp", position = (0,-2,-5))
+modelList = [rend.loadModel(filename = "axe.obj", texture = "axe.bmp", position = (0,-2,-5)),
+             rend.loadModel(filename = "hand.obj", texture = "skin.bmp", position = (0,-1.5,-5), scale = (0.1,0.1,0.1)),
+             rend.loadModel(filename = "vpot.obj", texture = "terracota.bmp", position = (0,-1.5,-5), scale = (0.2,0.2,0.2)),
+             rend.loadModel(filename = "notepad.obj", texture = "notepad.bmp", position = (0,-2,-5), scale = (0.15,0.15,0.15))
+             ]
 
-#Comentarle a Carlos esto del LookAt
-rend.target = obj1.position
+token = 0
+
+rend.scene.append(modelList[token])
 
 isRunning = True
+
+r = 5
+theta = 0.0
+
 while isRunning:
     
     deltaTime = clock.tick(60)/1000
@@ -43,14 +57,13 @@ while isRunning:
                 rend.toggleFilledMode()
                 
             elif event.key == pygame.K_1:
-                obj2 = rend.loadModel(filename = "hand.obj", texture = "skin.bmp", position = (0,-2,-5), scale = (0.5,0.5,0.5))
-                rend.target = obj2.position
+                token = 0
             elif event.key == pygame.K_2:
-                obj3 = rend.loadModel(filename = "vpot.obj", texture = "terracota.bmp", position = (0,-2,-5), scale = (0.5,0.5,0.5))
-                rend.target = obj3.position
+                token = 1
             elif event.key == pygame.K_3:
-                obj4 = rend.loadModel(filename = "notepad.obj", texture = "notepad.bmp", position = (0,-2,-5), scale = (0.5,0.5,0.5))
-                rend.target = obj4.position
+                token = 2
+            elif event.key == pygame.K_4:
+                token = 3
             
             elif event.key == pygame.K_7:
                 rend.setShaders(complex_shader, chess_shader)
@@ -60,33 +73,46 @@ while isRunning:
                 rend.setShaders(complex_shader, disco_shader)
             elif event.key == pygame.K_0:
                 rend.setShaders(complex_shader, pattern_shader)            
+    
+    actualModel = modelList[token]
+    rend.scene = [actualModel]
+    
+    rend.target = actualModel.position
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
     #5 unidades por segundo
     if keys[K_d]:
-        rend.camPosition.x -= 5 * deltaTime 
+        theta += 0.3 * deltaTime
+        rend.camPosition.x = actualModel.position.x + r * glm.cos(theta)
          
     elif keys[K_a]:
-        rend.camPosition.x += 5 * deltaTime
+        theta -= 0.3 * deltaTime
+        rend.camPosition.x = actualModel.position.x + r * glm.cos(theta)
     
     if keys[K_w]:
-        rend.camPosition.y -= 5 * deltaTime
+        theta += 0.3 * deltaTime
+        rend.camPosition.y = actualModel.position.x + r * glm.sin(theta)
          
     elif keys[K_s]:
-        rend.camPosition.y += 5 * deltaTime
+        theta -= 0.3 * deltaTime
+        rend.camPosition.y = actualModel.position.x + r * glm.sin(theta)
             
     if keys[K_q]:
-        rend.camPosition.z += 5 * deltaTime
+        if rend.camPosition.z < 3:
+            rend.camPosition.z += 5 * deltaTime
+
         
     elif keys[K_e]:
-        rend.camPosition.z -= 5 * deltaTime
+        if rend.camPosition.z > -3:
+            rend.camPosition.z -= 5 * deltaTime
         
-    obj1.rotation.y += 45 * deltaTime
+    #actualModel.rotation.y += 45 * deltaTime
     
     if keys[K_RIGHT]:
-        obj1.rotation.y += 45 * deltaTime 
+        actualModel.rotation.y += 45 * deltaTime 
          
     elif keys[K_LEFT]:
-        obj1.rotation.y -= 135 * deltaTime #135 con rotacion constante
+        actualModel.rotation.y -= 135 * deltaTime #135 con rotacion constante
         
     if keys[K_f]:
         if rend.fatness <1.0:
